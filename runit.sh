@@ -4,9 +4,10 @@
 HA=false  # single infra node
 
 # whether to use proxy
-PROXY=false
-PROXY_HTTP="http://100.107.0.4:1080"
-PROXY_HTTPS="http://100.107.0.4:1080"
+PROXY=true
+PROXY_HTTP="http://91.189.89.216:3128"
+PROXY_HTTPS="http://91.189.89.216:3128"
+PROXY_IGNORE="127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 
 # location of log file
 LOG=./output.txt
@@ -56,6 +57,7 @@ if [ "$PROXY" = true ] ; then
   echo "Going to use proxy"
   echo "  HTTP_PROXY=${PROXY_HTTP}"
   echo "  HTTPS_PROXY=${PROXY_HTTPS}"
+  echo "  NO_PROXY=${PROXY_IGNORE}"
 else
   echo "No proxy will be configured"
 fi
@@ -82,7 +84,7 @@ if [ "$PROXY" = true ] ; then
   cat <<EOF | sudo tee -a /etc/environment >> $LOG 2>&1
 http_proxy="${PROXY_HTTP}"
 https_proxy="${PROXY_HTTPS}"
-no_proxy=127.0.0.1
+no_proxy="${PROXY_IGNORE}"
 EOF
   ok
   info "Restarting snapd..."
@@ -303,6 +305,7 @@ if [ "$PROXY" = true ] ; then
   info "Adding proxy to infras..."
   for i in ${INFRAS} ; do echo http_proxy=\"${PROXY_HTTP}\"|ssh -o StrictHostKeyChecking=no ${i} "cat - |sudo tee -a /etc/environment"; done >> $LOG 2>&1
   for i in ${INFRAS} ; do echo https_proxy=\"${PROXY_HTTPS}\"|ssh -o StrictHostKeyChecking=no ${i} "cat - |sudo tee -a /etc/environment"; done >> $LOG 2>&1
+  for i in ${INFRAS} ; do echo no_proxy=\"${PROXY_IGNORE}\"|ssh -o StrictHostKeyChecking=no ${i} "cat - |sudo tee -a /etc/environment"; done >> $LOG 2>&1
   ok
 fi
 
@@ -335,21 +338,21 @@ define() {
 # \$3 memory
 # \$4 - \$8 unique MAC
 
-CPUOPTS="--cpu host"
+CPUOPTS="--cpu host-passthrough,cache.mode=passthrough"
 GRAPHICS="--graphics vnc --video=cirrus"
 CONTROLLER="--controller scsi,model=virtio-scsi,index=0"
 DISKOPTS="format=qcow2,bus=scsi,cache=writeback"
 export CPUOPTS GRAPHICS CONTROLLER DISKOPTS
 
 qemu-img create -f qcow2 ${VMs}/\${1}\${2}d1.qcow2 60G
-qemu-img create -f qcow2 ${VMs}/\${1}\${2}d2.qcow2 20G
-qemu-img create -f qcow2 ${VMs}/\${1}\${2}d3.qcow2 20G
+qemu-img create -f qcow2 ${VMs}/\${1}\${2}d2.qcow2 100G
+qemu-img create -f qcow2 ${VMs}/\${1}\${2}d3.qcow2 100G
 
 virt-install --noautoconsole --print-xml --boot network,hd,menu=on \
 \$GRAPHICS \$CONTROLLER --name \${1}\${2} --ram \$3 --vcpus 2 \$CPUOPTS \
---disk path=${VMs}/\${1}\${2}d1.qcow2,size=60,\$DISKOPTS \
---disk path=${VMs}/\${1}\${2}d2.qcow2,size=20,\$DISKOPTS \
---disk path=${VMs}/\${1}\${2}d3.qcow2,size=20,\$DISKOPTS \
+--disk path=${VMs}/\${1}\${2}d1.qcow2,\$DISKOPTS \
+--disk path=${VMs}/\${1}\${2}d2.qcow2,\$DISKOPTS \
+--disk path=${VMs}/\${1}\${2}d3.qcow2,\$DISKOPTS \
 --network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:1\${2},model=virtio \
 --network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:2\${2},model=virtio \
 --network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:3\${2},model=virtio \
@@ -361,7 +364,7 @@ virsh define \${1}\${2}.xml
 }
 
 for i in \$(seq 1 9); do
-  define fe \${i} 4096 \$(date +"%y %m %H %M %S")
+  define fe \${i} 6144 \$(date +"%y %m %H %M %S")
 done
 EOF
 
