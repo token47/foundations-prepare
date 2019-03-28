@@ -1,20 +1,18 @@
 #!/bin/bash
 
-git config set http.proxy=http://91.189.89.216:3128
-git config set https.proxy=http://91.189.89.216:3128
-git config set user.name=Andre Ruiz
-git config set user.email=andre.ruiz@canonical.com
-git config set core.editor=vim
-git config set url.git+ssh://andre-ruiz@git.launchpad.net/.insteadof=lp:
-
-echo "$(ssh 192.168.210.4 "sudo -u maas ssh-keygen -y -f /var/lib/maas/.ssh/id_rsa") maas@infra1" >> .ssh/authorized_keys
+git config --global http.proxy http://91.189.89.216:3128
+git config --global https.proxy http://91.189.89.216:3128
+git config --global user.name Andre Ruiz
+git config --global user.email andre.ruiz@canonical.com
+git config --global core.editor vim
+git config --global url.git+ssh://andre-ruiz@git.launchpad.net/.insteadof lp:
 
 mkdir ~/.ssh 2>/dev/null
 cat << EOF >> ~/.ssh/config
 Host *.lxd
         CheckHostIP no
         StrictHostKeyChecking no
-        ProxyCommand nc $(lxc list -c s4 $(echo %h | sed "s/\.lxd//g") | grep RUNNING | cut -d' ' -f4) %p
+        ProxyCommand nc \$(lxc list -c s4 \$(echo %h | sed "s/\\.lxd//g") | grep RUNNING | cut -d' ' -f4) %p
         ForwardAgent yes
         User ubuntu
         ForwardX11 yes
