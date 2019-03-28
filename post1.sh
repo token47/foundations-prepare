@@ -24,12 +24,6 @@ Host git.launchpad.net bazaar.launchpad.net
         User andre-ruiz
 EOF
 
-exit 0
-
-https_proxy=http://91.189.89.216:3128
-http_proxy=http://91.189.89.216:3128
-no_proxy=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-
 export https_proxy=http://91.189.89.216:3128
 export http_proxy=http://91.189.89.216:3128
 export no_proxy=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
