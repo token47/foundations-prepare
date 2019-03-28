@@ -1,3 +1,7 @@
+# Personal copy
+
+This is a fork of original repo for storing customizations. Please look at the original if you just want to use the tool.
+
 # foundations-prepare
 
 Contains two scripts

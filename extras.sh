@@ -1,0 +1,38 @@
+#!/bin/bash
+
+git config set http.proxy=http://91.189.89.216:3128
+git config set https.proxy=http://91.189.89.216:3128
+git config set user.name=Andre Ruiz
+git config set user.email=andre.ruiz@canonical.com
+git config set core.editor=vim
+git config set url.git+ssh://andre-ruiz@git.launchpad.net/.insteadof=lp:
+
+echo "$(ssh 192.168.210.4 "sudo -u maas ssh-keygen -y -f /var/lib/maas/.ssh/id_rsa") maas@infra1" >> .ssh/authorized_keys
+
+mkdir ~/.ssh 2>/dev/null
+cat << EOF >> ~/.ssh/config
+Host *.lxd
+        CheckHostIP no
+        StrictHostKeyChecking no
+        ProxyCommand nc $(lxc list -c s4 $(echo %h | sed "s/\.lxd//g") | grep RUNNING | cut -d' ' -f4) %p
+        ForwardAgent yes
+        User ubuntu
+        ForwardX11 yes
+
+Host git.launchpad.net bazaar.launchpad.net
+        UserKnownHostsFile /dev/null
+        StrictHostKeyChecking no
+        CheckHostIP no
+        User andre-ruiz
+EOF
+
+exit 0
+
+https_proxy=http://91.189.89.216:3128
+http_proxy=http://91.189.89.216:3128
+no_proxy=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+
+export https_proxy=http://91.189.89.216:3128
+export http_proxy=http://91.189.89.216:3128
+export no_proxy=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+
