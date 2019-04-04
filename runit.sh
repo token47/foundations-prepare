@@ -358,7 +358,6 @@ virt-install --noautoconsole --print-xml --boot network,hd,menu=on \
 --network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:3\${2},model=virtio \
 --network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:4\${2},model=virtio \
 --network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:5\${2},model=virtio \
---network=bridge=maasbr0,mac=18:\${5}:\${6}:\${7}:\${8}:6\${2},model=virtio \
 > \${1}\${2}.xml
 
 virsh define \${1}\${2}.xml

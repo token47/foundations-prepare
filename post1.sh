@@ -24,7 +24,7 @@ Host git.launchpad.net bazaar.launchpad.net
         User andre-ruiz
 EOF
 
-for i in 10.0.1.254/24 10.0.2.254/24 10.0.3.254/24 10.0.4.254/24 10.0.5.254/24; do
+for i in 10.0.1.1/24 10.0.2.1/24 10.0.3.1/24 10.0.4.1/24; do
 	sudo ip addr add $i dev maasbr0
 done
 
