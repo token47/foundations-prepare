@@ -4,7 +4,7 @@
 HA=false  # single infra node
 
 # whether to use proxy
-PROXY=true
+PROXY=false
 PROXY_HTTP="http://91.189.89.216:3128"
 PROXY_HTTPS="http://91.189.89.216:3128"
 PROXY_IGNORE="127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
@@ -71,7 +71,7 @@ info "Checking user..."
 if [ ${USER} != 'ubuntu' ]; then
   echo "Script must run under user ubuntu"
   logit "echo This is just a dumb script which assumes it runs under user ubuntu"
-  return 1
+  exit 1
 fi
 ok
 
@@ -125,7 +125,7 @@ elif [[ $(lscpu | grep AMD) ]]; then
   CPU=amd
 else
   logit "Could not detect processor type"
-  return 1
+  exit 1
 fi
 
 # it happened ONCE nested KVM was not allowed, so these three lines are just in case
@@ -184,7 +184,7 @@ brctl show|grep mpvirtbr0 >> $LOG 2>&1
 if [ $? != 0 ] ; then
   logit "echo It sucks"
   info "mpvirtbr0 was not created, something is wrong"
-  return 1
+  exit 1
 fi
 
 # multipass cloudinit
