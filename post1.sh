@@ -1,7 +1,7 @@
 #!/bin/bash
 
-git config --global http.proxy http://91.189.89.216:3128
-git config --global https.proxy http://91.189.89.216:3128
+#git config --global http.proxy http://91.189.89.216:3128
+#git config --global https.proxy http://91.189.89.216:3128
 git config --global user.name Andre Ruiz
 git config --global user.email andre.ruiz@canonical.com
 git config --global core.editor vim
