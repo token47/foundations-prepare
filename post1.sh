@@ -1,5 +1,17 @@
 #!/bin/bash
 
+for i in 10.0.1.1/24 10.0.2.1/24 10.0.3.1/24 10.0.6.1/24; do
+	sudo ip addr add $i dev maasbr0
+done
+
+exit 0
+
+# just for reference
+
+export https_proxy=http://91.189.89.216:3128
+export http_proxy=http://91.189.89.216:3128
+export no_proxy=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+
 #git config --global http.proxy http://91.189.89.216:3128
 #git config --global https.proxy http://91.189.89.216:3128
 git config --global user.name Andre Ruiz
@@ -23,16 +35,4 @@ Host git.launchpad.net bazaar.launchpad.net
         CheckHostIP no
         User andre-ruiz
 EOF
-
-for i in 10.0.1.1/24 10.0.2.1/24 10.0.3.1/24 10.0.4.1/24; do
-	sudo ip addr add $i dev maasbr0
-done
-
-exit 0
-
-# just for reference
-
-export https_proxy=http://91.189.89.216:3128
-export http_proxy=http://91.189.89.216:3128
-export no_proxy=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 
