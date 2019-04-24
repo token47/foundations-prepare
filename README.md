@@ -1,39 +1,11 @@
-# Personal copy
+# FCE Lab tool
 
-This is a fork of original repo for storing customizations. Please look at the original if you just want to use the tool.
+- Sugested at least 8 procs and 64GB of ram, 1 TB disc
+- Install Ubuntu Bionic 18.04 LTS, EFI + boot + giant root partition
+- Strongly recommended to use bcache with SSD on the root partition
+- Adjust configs on config.inc.sh
+- Run ./fcelab.sh -i to install (-u to uninstall)
+- Download fce-templates and cpe-foundation and enjoy
 
-# foundations-prepare
+This script will configure proxy, install packages, set up kvm, create VMs, configure network, iptables rules, DNS, ssh and keypairs, among other stuff.
 
-Contains two scripts
-
-## runit.sh
-
-This script will prepare environment for VM only foundations setup.
-
-- install and configure local DNS forwarder
-- create internal maasbr0 bridge
-- install multipass
-- install infra node(s)
-- setup ssh keys as needed by foundations
-
-It is just a dumb script, not checking many things. It assumes it is started on a fresh 18.04 installation,
-running under ubuntu user.
-
-There are several variables at the beginning of the script which can be set
-
-- `HA` if `true`, three infra nodes will be created, default is `false` which means just one infra node
-- `PROXY` if `true`, `PROXY_HTTP` and `PROXY_HTTPS` are used in appropriate places. Default is `false`
-- `LOG` - text file which will contain logs from the run
-- `VMs` - path to a directory which will contain qcow2 files
-
-Script will set internal network of `192.168.210.0/24`. It is possible to change it with set of variables in the script, but it is not required to.
-
-Two things which are not set permanently and will disappear after a reboot
-
-- maasbr0 is not in netplan files
-- iptables changes are not saved
-
-## cleanit.sh
-
-Even dumber than previous, it just tries to clean up what runit.sh as much as possible, absoliutely no checking, error messages are expected.
-I use it during development just to have a clean(-ish) slate to avoid redeploying the server.

@@ -26,4 +26,9 @@ function ok() {
         printf "${GREEN}OK${NC}\n"
 }
 
+function usage ()
+{
+        echo "Usage: $prog [-i|-u] [-v] [-h]"
+	exit 0
+}
 
