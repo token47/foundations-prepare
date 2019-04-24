@@ -1,8 +1,6 @@
 #!/bin/true # this file is not supposed to be called directly
 
-function create_infra_node() {
-
-	[ "$HA" != "true" ] && [ "$name" == "infra2" -o "$name" == "infra3" ] && return
+function create_node_type1() {
 
 	oc3="$(printf '%02x\n' $(($RANDOM%256)) )"
 	oc4="$(printf '%02x\n' $(($RANDOM%256)) )"
@@ -19,7 +17,7 @@ function create_infra_node() {
 	
 }
 
-function create_normal_node() {
+function create_node_type2() {
 
 	local VM_DIR="$HOME/virt/vms"
 
@@ -65,9 +63,11 @@ function layer_install() {
 		disc1="${a[3]}" disc2="${a[4]}" disc3="${a[5]}" nets="${a[6]}"
 
 		if [[ "$name" =~ ^infra ]]; then
-			create_infra_node
+			if [ "$HA" == "true" -o "$HA" == "True"] || [ "$name" == "infra1" ]; then
+				create_node_type1
+			fi
 		else
-			create_normal_node
+			create_node_type2
 		fi
 
 	done
