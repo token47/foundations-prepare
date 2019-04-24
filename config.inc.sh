@@ -103,11 +103,13 @@ INSTALL_LAYERS=(
 	#iptables
 	#bind
 	#ssh
+	#tunebcache
 )
 
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
+	#tunebcache
 	#ssh
 	#bind
 	#iptables
@@ -118,3 +120,4 @@ UNINSTALL_LAYERS=(
 	#packages
 	#proxy
 )
+
