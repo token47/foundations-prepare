@@ -1,9 +1,10 @@
 #!/bin/bash
 
-prog=${0##*/}
+self_prog="$(basename "$0")"
+self_dir="$(dirname "$0")"
 
-source ${prog}/config.inc.sh
-source ${prog}/lib/utils.inc.sh
+source ${self_dir}/config.inc.sh
+source ${self_dir}/lib/utils.inc.sh
 
 function install() {
 
