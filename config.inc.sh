@@ -5,24 +5,33 @@
 # whether to deploy single node or three node high availability MaaS. 
 HA=false  # single infra node
 
-# Network
+# Ip address of the bridge on the host. The first ip is mandatory the others will be aliases
+# on the same bridge to facilitate accessing openstack networks from the host
+BRIDGE=maasbr0
+IPADDR=(
+	192.168.210.1/24
+	10.0.1.1/24
+	10.0.2.1/24
+	10.0.3.1/24
+	10.0.6.0/24
+)
+
+# The ip addresses of the infra nodes (2 and 3 will be ignored if not using HA)
 INFRA1=192.168.210.4
 INFRA2=192.168.210.5
 INFRA3=192.168.210.6
-CIDR=192.168.210.0/24
-CIDR_bits=24
-IPADDR=192.168.210.1
-BRIDGE=maasbr0
 
-# whether to set up a local proxy (on this host)
+# whether to set up a local squid proxy (on this host)
 # my sugestion is to answer yes here, and consider this the main proxy of the environment
 # then set this host as the maas proxy in master.yaml (and disable peer proxy)
 # also, set all proxies for apt, juju and others in master.yaml to this one too
+# this also helps keeping maas disk small (avoid proxy cache inside maas)
 LOCAL_PROXY=yes
 
-# whether to use external proxy as a peer
-# the local proxy will forward to this proxy
+# whether to use external proxy as a peer (forwarder) for the local proxy
 # networks on the ignore list will be accessed directly (not forwarded)
+# this is very useful because you cannot easily control which networks
+# you do not want to send to the proxy if you use the external proxy directly
 PEER_PROXY=yes
 PEER_PROXY_ADDR="http://91.189.89.216:3128"
 PEER_PROXY_IGNORE="10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
@@ -45,7 +54,7 @@ INSTALL_PACKAGES=(
 	qemu-kvm
 	bind9
 	bind9utils
-	openstack
+	squid
 	snap:juju
 	snap:juju-wait
 	snap:charm
