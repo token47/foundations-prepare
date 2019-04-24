@@ -3,7 +3,7 @@
 # (c) Andre Ruiz 2019
 
 # whether to deploy single node or three node high availability MaaS. 
-HA=false  # single infra node
+HA=false  # single infra node or three nodes cluster (true/false)
 
 # Ip address of the bridge on the host. The first ip is mandatory the others will be aliases
 # on the same bridge to facilitate accessing openstack networks from the host
@@ -21,9 +21,9 @@ INFRA1=192.168.210.4
 INFRA2=192.168.210.5
 INFRA3=192.168.210.6
 
-# whether to set up a local squid proxy (on this host)
+# whether to set up a local squid proxy service on this host
 # my sugestion is to answer yes here, and consider this the main proxy of the environment
-# then set this host as the maas proxy in master.yaml (and disable peer proxy)
+# then use this host as the maas proxy in master.yaml (and disable peer proxy)
 # also, set all proxies for apt, juju and others in master.yaml to this one too
 # this also helps keeping maas disk small (avoid proxy cache inside maas)
 LOCAL_PROXY=yes
@@ -47,14 +47,20 @@ ENV_PROXY_HTTPS="http://91.189.89.216:3128"
 
 # packages to install
 INSTALL_PACKAGES=(
+	wget
 	bridge-utils
 	libvirt-bin
+	libvirt-client
 	qemu-utils
 	virtinst
 	qemu-kvm
+	qemu-img
 	bind9
 	bind9utils
 	squid
+	genisoimage
+	virt-install
+	libguestfs-tools-c
 	snap:juju
 	snap:juju-wait
 	snap:charm
@@ -63,10 +69,11 @@ INSTALL_PACKAGES=(
 )
 
 # list of VMs to create
-# please account for the fact that the infra nodes will have VMs inside pods (i.e. juju)
-# so at least 8GB for maas + juju only, more if you want to install LMA
+# please account for the fact that the infra nodes will have VMs inside pods (i.e. juju) using
+# nested virtualization, so at least 8GB for maas + juju only, more if you want to install LMA
 # infra2 and infra3 will be ignored if you use HA=false, no need to remove them from the list
-VM_DIR=~/virtual_machines
+# note: current limitations on infra nodes: you cannot change their names, and they can have
+# only one disc and one nic, others will be ignored (this may be changed in a future version)
 VM_LIST=(
 	# vm              mem  disc1  disc2  disc3
 	# name    vcpu     MB    GB     GB     GB   nics
@@ -90,11 +97,11 @@ INSTALL_LAYERS=(
 	proxy
 	packages
 	kvm
+	keypair
 	vms
 	network
 	iptables
 	bind
-	keypair
 	ssh
 )
 
@@ -102,12 +109,12 @@ INSTALL_LAYERS=(
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
 	ssh
-	keypair
 	bind
 	iptables
 	network
-	kvm
 	vms
+	#keypair
+	kvm
 	#packages
 	proxy
 )

@@ -2,13 +2,17 @@
 
 prog=${0##*/}
 
+source ${prog}/config.inc.sh
+source ${prog}/lib/utils.inc.sh
+
 function install() {
 
 	for layer in $INSTALL_LAYERS; do
-		source ./layers/${layer}.sh
+		# we want a subshell so that "source" can have a forgettable scope
+		(
+		source ./layers/layer-${layer}.sh
 		layer_install
-		unset layer_install
-		unset layer_uninstall
+		)
 	done
 
 }
@@ -16,10 +20,10 @@ function install() {
 function uninstall() {
 
 	for layer in $UNINSTALL_LAYERS; do
-		source ./layers/${layer}.sh
+		(
+		source ./layers/layer-${layer}.sh
 		layer_uninstall
-		unset layer_install
-		unset layer_uninstall
+		)
 	done
 
 }
