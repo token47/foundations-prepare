@@ -89,22 +89,30 @@ VM_LIST=(
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 INSTALL_LAYERS=(
-	#proxyserver
-	#proxyclient
-	#packages
+	proxyserver
+	proxyclient
+	packages
 	#bcache
-	#keypair
-	#kvm
-	#vms
-	#network
-	#iptables
-	#bind
-	#ssh
+	keypair
+	kvm
+	vms
+	network
+	iptables
+	bind
 )
 
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
+	bind
 	iptables
+	network
+	vms
+	kvm
+	keypair
+	#bcache
+	#packages
+	proxyclient
+	proxyserver
 )
 
