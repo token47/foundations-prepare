@@ -2,7 +2,6 @@
 
 function layer_install() {
 
-	sudo adduser `id -un` libvirtd
 	sudo adduser `id -un` kvm
 
 	if [[ $(lscpu | grep Intel) ]]; then
