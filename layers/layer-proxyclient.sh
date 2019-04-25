@@ -2,10 +2,10 @@
 
 function layer_install() {
 
-	[ "$ENV_PROXY" != "yes" ] && return
+	[ "$ENV_PROXY" != "yes" ] && return 0
 
 	# if environment is already set, presume all config is ok and exit
-	grep -q "# fce-lab tool$" /etc/environment && return
+	grep -q "# fce-lab tool$" /etc/environment && return 0
 
 	cat <<-EOF | sudo tee -a /etc/environment >/dev/null
 	http_proxy="${ENV_PROXY_URI}"  # fce-lab tool
