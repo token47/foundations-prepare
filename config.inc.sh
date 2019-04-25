@@ -44,6 +44,7 @@ ENV_PROXY_URI="http://192.168.210.1:3128"
 # packages to install
 INSTALL_PACKAGES=(
 	bridge-utils
+	cloud-image-utils
 	virtinst
 	libvirt-bin
 	#libvirt-clients
@@ -65,23 +66,23 @@ INSTALL_PACKAGES=(
 # list of VMs to create
 # please account for the fact that the infra nodes will have VMs inside pods (i.e. juju) using
 # nested virtualization, so at least 8GB for maas + juju only, more if you want to install LMA
-# note: current limitations on infra nodes: their names must start with "infra*", and they can have
-# only one disc and one nic, others will be ignored (this may be changed in a future version)
+# type=infra means linux will be installed and configured, and the vm will power on automatically
+# type=node means only the vm will be created but not installed (so the IP address is ignored)
 VM_LIST=(
-	# vm              mem  disc1  disc2  disc3
-	# name    vcpu     MB    GB     GB     GB   nics     ip address
-	"infra1     2    8192    60      0      0     1   192.168.210.4"
-	#"infra2     2    4096    60      0      0     1   192.168.210.5"
-	#"infra3     2    4096    60      0      0     1   192.168.210.6"
-	"node1      2    6144    60     50     50     5   -"
-	"node2      2    6144    60     50     50     5   -"
-	"node3      2    6144    60     50     50     5   -"
-	"node4      2    6144    60     50     50     5   -"
-	"node5      2    6144    60     50     50     5   -"
-	"node6      2    6144    60     50     50     5   -"
-	"node7      2    6144    60     50     50     5   -"
-	"node8      2    6144    60     50     50     5   -"
-	"node9      2    6144    60     50     50     5   -"
+	# vm      vm              mem  disc1  disc2  disc3
+	#type     name    vcpu     MB    GB     GB     GB   nics    oam ip address
+	"infra   infra1     2    8192    60      0      0     1     192.168.210.4"
+	"infra   infra2     2    4096    60      0      0     1     192.168.210.5"
+	"infra   infra3     2    4096    60      0      0     1     192.168.210.6"
+	"node    node1      2    6144    60     50     50     5     -"
+	"node    node2      2    6144    60     50     50     5     -"
+	"node    node3      2    6144    60     50     50     5     -"
+	"node    node4      2    6144    60     50     50     5     -"
+	"node    node5      2    6144    60     50     50     5     -"
+	"node    node6      2    6144    60     50     50     5     -"
+	"node    node7      2    6144    60     50     50     5     -"
+	"node    node8      2    6144    60     50     50     5     -"
+	"node    node9      2    6144    60     50     50     5     -"
 )
 
 # list of layers to execute on install

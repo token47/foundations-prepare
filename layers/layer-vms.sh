@@ -1,6 +1,6 @@
 #!/bin/true # this file is not supposed to be called directly
 
-function create_node_type1() {
+function create_infra() {
 
 	local oc3 oc4 oc5
 
@@ -22,7 +22,7 @@ function create_node_type1() {
 
 }
 
-function create_node_type2() {
+function create_node() {
 
 	local oc3 oc4 oc5
 	local VM_DIR="$HOME/virt/vms"
@@ -65,13 +65,13 @@ function layer_install() {
 	for item in "${VM_LIST[@]}"; do
 
 		local a=($item)
-		name="${a[0]}" vcpu="${a[1]}" mem="${a[2]}"
-		disc1="${a[3]}" disc2="${a[4]}" disc3="${a[5]}" nets="${a[6]}"
+		type="${a[0]}"; name="${a[1]}"; vcpu="${a[2]}"; mem="${a[3]}"; disc1="${a[4]}";
+		disc2="${a[5]}"; disc3="${a[6]}"; nets="${a[7]}"; ip="${a[8]}";
 
-		if [[ "$name" =~ ^infra ]]; then
-			create_node_type1
+		if [ "$type" == "infra" ]; then
+			create_infra
 		else
-			create_node_type2
+			create_node
 		fi
 
 	done
