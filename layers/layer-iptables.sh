@@ -3,7 +3,7 @@
 function layer_install() {
 
 	# check if rules are already in place and exit
-	sudo iptables -L -n -v | grep -q "/\* fce-lab \*/" && exit
+	sudo iptables -L -n -v | grep -q "/\* fce-lab \*/" && return
 
 	sudo iptables -t nat -A POSTROUTING -s ${IPADDR[0]} ! -d ${IPADDR[0]} \
 		-m comment --comment "fce-lab" -j MASQUERADE
@@ -22,7 +22,7 @@ function layer_install() {
 function layer_uninstall() {
 
 	# check if no rules to remove, then exit
-	sudo iptables -L -n -v | grep -q "/\* fce-lab \*/" || exit
+	sudo iptables -L -n -v | grep -q "/\* fce-lab \*/" || return
 
 	sudo iptables -t nat -D POSTROUTING -s ${IPADDR[0]} ! -d ${IPADDR[0]} \
 		-m comment --comment "fce-lab" -j MASQUERADE

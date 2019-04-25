@@ -96,13 +96,13 @@ INSTALL_LAYERS=(
 	kvm
 	vms
 	iptables
-	bind
+	#bind
 )
 
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
-	bind
+	#bind
 	iptables
 	vms
 	kvm

@@ -19,7 +19,7 @@ function layer_uninstall() {
 	sudo netplan apply
 
 	# only try to hot-remove if it's there
-	ip link | grep -q "$BRIDGE" || exit 0
+	ip link | grep -q "$BRIDGE" || return
 
 	sudo ip link set $BRIDGE down
 	sudo ip link delete $BRIDGE type bridge

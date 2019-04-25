@@ -2,6 +2,9 @@
 
 function layer_install() {
 
+	sudo adduser `id -un` libvirtd
+	sudo adduser `id -un` kvm
+
 	if [[ $(lscpu | grep Intel) ]]; then
 		sudo modprobe -r kvm_intel
 		cat <<-EOF | sudo tee /etc/modprobe.d/kvm.conf >/dev/null

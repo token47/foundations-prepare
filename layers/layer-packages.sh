@@ -3,9 +3,9 @@
 function process_apt() {
 
 	if [ "$action" == "install" ]; then
-		sudo apt install -y $pkg_list
+		sudo DEBIAN_FRONTEND=noninteractive apt install -y -q $pkg_list
 	else
-		sudo apt remove -y --autoremove $pkg_list
+		sudo DEBIAN_FRONTEND=noninteractive apt remove -y -q --autoremove $pkg_list
 	fi
 
 }

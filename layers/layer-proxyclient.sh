@@ -2,15 +2,15 @@
 
 function layer_install() {
 
-	[ "$ENV_PROXY" != "yes" ] && exit
+	[ "$ENV_PROXY" != "yes" ] && return
 
 	# if environment is already set, presume all config is ok and exit
-	grep -q "# fce-lab-tool$" /etc/environment && exit
+	grep -q "# fce-lab tool$" /etc/environment && return
 
 	cat <<-EOF | sudo tee -a /etc/environment >/dev/null
-	http_proxy="${ENV_PROXY_URI}"  # fce-lab-tool
-	https_proxy="${ENV_PROXY_URI}"  # fce-lab-tool
-	no_proxy="localhost,127.0.0.1"  # fce-lab-tool
+	http_proxy="${ENV_PROXY_URI}"  # fce-lab tool
+	https_proxy="${ENV_PROXY_URI}"  # fce-lab tool
+	no_proxy="localhost,127.0.0.1"  # fce-lab tool
 	EOF
 
 	# restart snapd so it can re-load environment and use new proxy settings
@@ -27,7 +27,7 @@ function layer_install() {
 function layer_uninstall() {
 
 	# remove all
-	sudo ex -sc "$(echo -en ":g/# fce-lab-tool$/d\nx")" /etc/environment
+	sudo ex -sc "$(echo -en ":g/# fce-lab tool$/d\nx")" /etc/environment
 	sudo rm -f /etc/apt/apt.conf.d/fce-lab-proxy.conf
 	sudo systemctl restart snapd
 

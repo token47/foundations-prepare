@@ -3,7 +3,7 @@
 function layer_install() {
 
 	# we never overwrite the key after once created
-	[ -f ~/.ssh/rsa_id ] && exit
+	[ -f ~/.ssh/rsa_id ] && return
 
 	echo 'y' | ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''
 
@@ -12,7 +12,7 @@ function layer_install() {
 function layer_uninstall() {
 
 	# we do not erase the key when uninstalling
-	:
+	return
 
 }
 
