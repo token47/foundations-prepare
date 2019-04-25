@@ -2,8 +2,6 @@
 
 function layer_install() {
 
-	sudo adduser `id -un` kvm
-
 	if [[ $(lscpu | grep Intel) ]]; then
 		sudo modprobe -r kvm_intel
 		cat <<-EOF | sudo tee /etc/modprobe.d/kvm.conf >/dev/null
@@ -21,7 +19,10 @@ function layer_install() {
 		sudo modprobe -a kvm_amd
 	fi
 
-	sudo su -l ubuntu -c virt-host-validate
+	# add user ubuntu to group kvm
+	sudo adduser $(id -un) kvm
+	# this is a hack to use the group just added to user ubuntu
+	sudo su -l ubuntu -c virt-host-validate qemu || :
 	
 }
 
