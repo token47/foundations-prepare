@@ -54,7 +54,7 @@ function define_instance() {
 			echo -n "path=${VM_DIR}/${name}-d3.qcow2" } ) \
 		     $( [ "$cloudinit" == "yes" ] && {
 			echo -n "--disk device=cdrom,"
-		        echo -n "path="${VM_DIR}/${name}-cloudinit.iso" } ) \
+		        echo -n "path=${VM_DIR}/${name}-cloudinit.iso" } ) \
 		     $( [ "$nets" -ge 1 ] && { echo -n "--network=bridge=${BRIDGE},"
 			echo -n "mac=54:56:$oc3:$oc4:$oc5:01,model=virtio" } ) \
 		     $( [ "$nets" -ge 2 ] && { echo -n "--network=bridge=${BRIDGE},"
