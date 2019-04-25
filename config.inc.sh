@@ -87,6 +87,7 @@ VM_LIST=(
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 INSTALL_LAYERS=(
+	network
 	proxyserver
 	proxyclient
 	packages
@@ -94,7 +95,6 @@ INSTALL_LAYERS=(
 	keypair
 	kvm
 	vms
-	network
 	iptables
 	bind
 )
@@ -104,7 +104,6 @@ INSTALL_LAYERS=(
 UNINSTALL_LAYERS=(
 	bind
 	iptables
-	network
 	vms
 	kvm
 	keypair
@@ -112,5 +111,6 @@ UNINSTALL_LAYERS=(
 	#packages
 	proxyclient
 	proxyserver
+	network
 )
 
