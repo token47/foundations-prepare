@@ -3,7 +3,7 @@
 function layer_install() {
 
 	# we never overwrite the key after once created
-	[ -f ~/.ssh/rsa_id ] && return
+	[ -f ~/.ssh/id_rsa ] && return
 
 	echo 'y' | ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''
 
