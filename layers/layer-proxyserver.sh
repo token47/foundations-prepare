@@ -28,6 +28,9 @@ function layer_install() {
 
 	fi
 	
+	# not it will really be running, stop it...
+	sudo systemctl stop squid || :
+
 	# this is the main config
 	cat <<-EOF | sudo tee /etc/squid/squid.conf >/dev/null
 	dns_v4_first on
