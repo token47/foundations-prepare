@@ -97,7 +97,7 @@ INSTALL_LAYERS=(
 	#kvm
 	#vms
 	#network
-	iptables
+	#iptables
 	#bind
 	#ssh
 )
