@@ -39,7 +39,7 @@ PEER_PROXY_IGNORE="127.0.0.1 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
 # note2: local environment DOT NOT have a way to avoid proxy for specific networks,
 # not even no_proxy will work (it's only for domains). Enable peer proxy if you need that.
 ENV_PROXY=yes # Values: yes/no
-ENV_PROXY_HTTP="http://192.168.210.1:3128"
+ENV_PROXY_URI="http://192.168.210.1:3128"
 
 # packages to install
 INSTALL_PACKAGES=(
@@ -86,11 +86,11 @@ VM_LIST=(
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 INSTALL_LAYERS=(
-	proxyserver
+	#proxyserver
 	#proxyclient
 	#packages
-	#kvm
 	#keypair
+	#kvm
 	#vms
 	#network
 	#iptables
@@ -102,6 +102,6 @@ INSTALL_LAYERS=(
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
-	proxyserver
+	#proxyserver
 )
 

@@ -12,8 +12,14 @@ function layer_install() {
 
 	if [ "$PEER_PROXY" == "yes" ]; then
 
-		sudo apt -o Acquire::http::Proxy "$PEER_PROXY_ADDR" update
-		sudo apt -o Acquire::http::Proxy "$PEER_PROXY_ADDR" install -y squid
+		sudo apt \
+			-o "Acquire::http::Proxy"="http://${PEER_PROXY_ADDR}:${PEER_PROXY_PORT}" \
+			-o "Acquire::https::Proxy"="http://${PEER_PROXY_ADDR}:${PEER_PROXY_PORT}" \
+			update
+		sudo apt \
+			-o "Acquire::http::Proxy"="http://${PEER_PROXY_ADDR}:${PEER_PROXY_PORT}" \
+			-o "Acquire::https::Proxy"="http://${PEER_PROXY_ADDR}:${PEER_PROXY_PORT}" \
+			install -y squid
 	
 	else
 
@@ -22,18 +28,13 @@ function layer_install() {
 
 	fi
 	
-	sudo cp -f /etc/squid/squid.conf{,.bak}
-
 	# this is the main config
 	cat <<-EOF | sudo tee /etc/squid/squid.conf >/dev/null
 	dns_v4_first on
-	dns_v4_fallback on
 	forwarded_for off
 	http_port 3128
 	http_port 8000
 	cache_dir aufs /var/spool/squid 500000 16 256
-	acl localhost src 127.0.0.1/255.255.255.255
-	acl all src 0.0.0.0/0
 	http_access allow localhost manager
 	http_access deny manager
 	http_access allow all
@@ -67,7 +68,7 @@ function layer_uninstall() {
 	sudo systemctl stop squid
 	#rm -f /etc/squid/squid.conf
 	#rm -rf /var/spool/squid/*
-	sudo apt remove -y squid
+	sudo apt remove -y --autoremove squid
 
 }
 

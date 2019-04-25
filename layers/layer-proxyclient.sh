@@ -8,8 +8,8 @@ function layer_install() {
 	grep -q "# fce-lab-tool$" /etc/environment && exit
 
 	cat <<-EOF | sudo tee -a /etc/environment >/dev/null
-	http_proxy="${ENV_PROXY_HTTP}"  # fce-lab-tool
-	https_proxy="${ENV_PROXY_HTTP}"  # fce-lab-tool
+	http_proxy="${ENV_PROXY_URI}"  # fce-lab-tool
+	https_proxy="${ENV_PROXY_URI}"  # fce-lab-tool
 	no_proxy="localhost,127.0.0.1"  # fce-lab-tool
 	EOF
 
@@ -18,8 +18,8 @@ function layer_install() {
 
 	# set proxy on apt
 	cat <<-EOF | sudo tee /etc/apt/apt.conf.d/fce-lab-proxy.conf >/dev/null
-	Acquire::http::Proxy "${ENV_PROXY_HTTP}";
-	Acquire::https::Proxy "${ENV_PROXY_HTTP}";
+	Acquire::http::Proxy "${ENV_PROXY_URI}";
+	Acquire::https::Proxy "${ENV_PROXY_URI}";
 	EOF
 
 }

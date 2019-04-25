@@ -2,6 +2,8 @@
 
 function create_node_type1() {
 
+	local oc3 oc4 oc5
+
 	oc3="$(printf '%02x\n' $(($RANDOM%256)) )"
 	oc4="$(printf '%02x\n' $(($RANDOM%256)) )"
 	oc5="$(printf '%02x\n' $(($RANDOM%256)) )"
@@ -22,6 +24,7 @@ function create_node_type1() {
 
 function create_node_type2() {
 
+	local oc3 oc4 oc5
 	local VM_DIR="$HOME/virt/vms"
 
 	mkdir "$VM_DIR"/"$name"

@@ -5,8 +5,7 @@ function process_apt() {
 	if [ "$action" == "install" ]; then
 		sudo apt install -y $pkg_list
 	else
-		sudo apt remove -y $pkg_list
-		sudo apt autoremove -y
+		sudo apt remove -y --autoremove $pkg_list
 	fi
 
 }
