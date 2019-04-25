@@ -15,11 +15,14 @@ function layer_install() {
 
 function layer_uninstall() {
 
-	sudo ip link set $BRIDGE down
-	sudo ip link delete $BRIDGE type bridge
-
 	sudo rm -f /etc/netplan/47-fce-lab.yaml
 	sudo netplan apply
+
+	# only try to hot-remove if it's there
+	ip link | grep -q "$BRIDGE" || exit 0
+
+	sudo ip link set $BRIDGE down
+	sudo ip link delete $BRIDGE type bridge
 
 }
 

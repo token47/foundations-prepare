@@ -2,8 +2,8 @@
 
 # (c) Andre Ruiz 2019
 
-# Ip address of the bridge on the host. The first ip is mandatory the others will be aliases
-# on the same bridge to facilitate accessing openstack networks from the host
+# Ip address of the bridge on the host. The first ip is mandatory (it's the OAM ip). The
+# others will be aliases on the same bridge to ease accessing openstack networks from the host
 BRIDGE=maasbr0
 IPADDR=(
 	192.168.210.1/24
@@ -54,6 +54,9 @@ INSTALL_PACKAGES=(
 	bind9
 	bind9utils
 	genisoimage
+	git
+	iptables-persistent
+	netfilter-persistent
 	snap:juju
 	snap:juju-wait
 	snap:charm
@@ -93,8 +96,8 @@ INSTALL_LAYERS=(
 	#keypair
 	#kvm
 	#vms
-	network
-	#iptables
+	#network
+	iptables
 	#bind
 	#ssh
 )
@@ -102,6 +105,6 @@ INSTALL_LAYERS=(
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
-	network
+	iptables
 )
 
