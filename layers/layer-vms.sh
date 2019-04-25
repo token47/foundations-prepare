@@ -91,9 +91,9 @@ function layer_uninstall() {
 		name="${a[0]}" vcpu="${a[1]}" mem="${a[2]}"
 		disc1="${a[3]}" disc2="${a[4]}" disc3="${a[5]}" nets="${a[6]}"
 
-		virsh destroy --domain "$name"
-		virsh undefine --domain "$name"
-		virsh pool-destroy "$name"
+		virsh destroy --domain "$name" || :
+		virsh undefine --domain "$name" || :
+		virsh pool-destroy "$name" || :
 
 		rm -rf "${VM_DIR}/${name}"
 
