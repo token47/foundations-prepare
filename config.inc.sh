@@ -89,19 +89,19 @@ INSTALL_LAYERS=(
 	#proxyserver
 	#proxyclient
 	#packages
+	#bcache
 	#keypair
 	#kvm
 	#vms
-	#network
+	network
 	#iptables
 	#bind
 	#ssh
-	#tunebcache
 )
 
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
-	#proxyserver
+	network
 )
 
