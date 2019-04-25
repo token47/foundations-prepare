@@ -29,7 +29,7 @@ function layer_install() {
 	fi
 	
 	# not it will really be running, stop it...
-	sudo systemctl stop squid || :
+	sudo systemctl stop squid
 
 	# this is the main config
 	cat <<-EOF | sudo tee /etc/squid/squid.conf >/dev/null
@@ -60,7 +60,7 @@ function layer_install() {
 	fi
 
 	# initialize the cache dir
-	sudo squid -z
+	sudo squid -N -z
 
 	sudo systemctl start squid
 
