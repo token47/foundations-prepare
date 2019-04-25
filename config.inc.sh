@@ -43,18 +43,16 @@ ENV_PROXY_URI="http://192.168.210.1:3128"
 
 # packages to install
 INSTALL_PACKAGES=(
-	wget
 	bridge-utils
 	virtinst
 	libvirt-bin
-	libvirt-clients
-	libguestfs-tools
+	#libvirt-clients
+	#libguestfs-tools
 	qemu-kvm
 	qemu-utils
-	bind9
-	bind9utils
+	#bind9
+	#bind9utils
 	genisoimage
-	git
 	iptables-persistent
 	netfilter-persistent
 	snap:juju

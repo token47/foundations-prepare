@@ -32,5 +32,7 @@ Use case:
 - Edit config.inc.sh to adjust configurations and run fce-lab.sh
 - Done, you are ready to install and use fce tool to deploy in the VMs.
 
+The environment will have about 12 VMs representing 3 infra nodes and 9 generic nodes and configured to ease the quick testing of complete deploys on the lab.
+
 (c) 2019 - Andre Ruiz
 
