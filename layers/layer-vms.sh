@@ -45,16 +45,16 @@ function define_instance() {
 		     --controller scsi,model=virtio-scsi,index=0 \
 		     $( [ "$disc1" -gt 0 ] && {
 		        echo -n "--disk format=qcow2,bus=scsi,cache=writeback,"
-			echo -n "path=${VM_DIR}/${name}/${name}-d1.qcow2" } ) \
+			echo -n "path=${VM_DIR}/${name}-d1.qcow2" } ) \
 		     $( [ "$disc2" -gt 0 ] && {
 		        echo -n "--disk format=qcow2,bus=scsi,cache=writeback,"
-			echo -n "path=${VM_DIR}/${name}/${name}-d2.qcow2" } ) \
+			echo -n "path=${VM_DIR}/${name}-d2.qcow2" } ) \
 		     $( [ "$disc3" -gt 0 ] && {
 		        echo -n "--disk format=qcow2,bus=scsi,cache=writeback,"
-			echo -n "path=${VM_DIR}/${name}/${name}-d3.qcow2" } ) \
+			echo -n "path=${VM_DIR}/${name}-d3.qcow2" } ) \
 		     $( [ "$cloudinit" == "yes" ] && {
 			echo -n "--disk device=cdrom,"
-		        echo -n "path="${VM_DIR}"/"${name}"/"${name}"-cloudinit.iso" } ) \
+		        echo -n "path="${VM_DIR}/${name}-cloudinit.iso" } ) \
 		     $( [ "$nets" -ge 1 ] && { echo -n "--network=bridge=${BRIDGE},"
 			echo -n "mac=54:56:$oc3:$oc4:$oc5:01,model=virtio" } ) \
 		     $( [ "$nets" -ge 2 ] && { echo -n "--network=bridge=${BRIDGE},"
@@ -76,10 +76,10 @@ function create_node_image() {
 	local pub_key cloudinitdir
 
 	# presumably the image is a qcow2 format even though the image has .img extension (ubuntu is)
-	cp ~/images/"$IMAGE_NAME" "${VM_DIR}"/"${name}"/"${name}"-d1.qcow2
-	qemu-img resize "${VM_DIR}"/"${name}"/"${name}"-d1.qcow2 "${disc1}"G
-	[ "$disc2" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}"/"${name}"/"${name}"-d2.qcow2 "${disc2}"G
-	[ "$disc3" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}"/"${name}"/"${name}"-d3.qcow2 "${disc3}"G
+	cp ~/images/"$IMAGE_NAME" "${VM_DIR}/${name}-d1.qcow2"
+	qemu-img resize "${VM_DIR}/${name}-d1.qcow2" "${disc1}"G
+	[ "$disc2" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}/${name}-d2.qcow2" "${disc2}G"
+	[ "$disc3" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}/${name}-d3.qcow2" "${disc3}G"
 
 	define_instance boot="hd,menu=off"
 
@@ -152,7 +152,7 @@ function create_node_image() {
 	fi
 
 	cloud-localds -d raw -f iso \
-		"${VM_DIR}"/"${name}"/"${name}"-cloudinit.iso $cloudinitdir/user-data
+		"${VM_DIR}/${name}-cloudinit.iso" "${cloudinitdir}/user-data"
 
 	define_instance boot="hd,menu=off" cloudinit=yes
 
@@ -163,9 +163,9 @@ function create_node_image() {
 
 function create_node_network() {
 
-	[ "$disc1" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}"/"${name}"/"${name}"-d1.qcow2 "${disc1}"G
-	[ "$disc2" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}"/"${name}"/"${name}"-d2.qcow2 "${disc2}"G
-	[ "$disc3" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}"/"${name}"/"${name}"-d3.qcow2 "${disc3}"G
+	[ "$disc1" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}/${name}-d1.qcow2" "${disc1}G"
+	[ "$disc2" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}/${name}-d2.qcow2" "${disc2}G"
+	[ "$disc3" -gt 0 ] && qemu-img create -f qcow2 "${VM_DIR}/${name}-d3.qcow2" "${disc3}G"
 
 	define_instance boot="network,hd,menu=on" cloudinit=no
 
@@ -175,7 +175,7 @@ function layer_install() {
 
 	local VM_DIR="$HOME/vms"
 
-	[ -d "$VM_DIR"/"$name" ] || mkdir -p "$VM_DIR"/"$name"
+	[ -d "$VM_DIR" ] || mkdir "$VM_DIR"
 
 	for item in "${VM_LIST[@]}"; do
 
@@ -210,9 +210,9 @@ function layer_uninstall() {
 		virsh undefine --domain "$name" || :
 		virsh pool-destroy "$name" || :
 
-		rm -rf "${VM_DIR}/${name}"
-
 	done
+
+	rm -rf "${VM_DIR}"
 
 	virsh list --all
 
