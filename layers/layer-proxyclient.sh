@@ -17,7 +17,7 @@ function layer_install() {
 	sudo systemctl restart snapd
 
 	# set proxy on apt
-	cat <<-EOF | sudo tee -a /etc/apt/apt.conf.d/fce-lab-proxy.conf >/dev/null
+	cat <<-EOF | sudo tee /etc/apt/apt.conf.d/fce-lab-proxy.conf >/dev/null
 	Acquire::http::Proxy "${ENV_PROXY_HTTP}";
 	Acquire::https::Proxy "${ENV_PROXY_HTTP}";
 	EOF
