@@ -18,24 +18,25 @@ IPADDR=(
 # then use this host as the maas proxy in master.yaml (and disable peer proxy)
 # also, set all proxies for apt, juju and others in master.yaml to this one too
 # this also helps keeping maas disk small (avoid proxy cache inside maas)
-LOCAL_PROXY=yes
+# it will be accessible at http://<this-host>:3128/ or http://<this-host>:8000/
+LOCAL_PROXY_SERVER=yes # Values: yes/no
 
-# whether to use external proxy as a peer (forwarder) for the local proxy
+# whether to use an external proxy as a peer (forwarder) for the local squid proxy
 # networks on the ignore list will be accessed directly (not forwarded)
 # this is very useful because you cannot easily control which networks
 # you do not want to send to the proxy if you use the external proxy directly
-PEER_PROXY=yes
+PEER_PROXY=yes # Values: yes/no
 PEER_PROXY_ADDR="http://91.189.89.216:3128"
 PEER_PROXY_IGNORE="10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
 
 # whether to put proxy variables on the environment of this host (/etc/environment)
 # this will set http_proxy and https_proxy env vars on this host shells, also
 # configure snap, apt and other apps to use the proxy
-# note: only this host will benefit from this. to configure proxy use on other deployed
-# VMs, configure adequate proxy parameters on fce config file (master.yaml)
-ENV_PROXY=yes
+# if you said yes on LOCAL_PROXY_SERVER, you can point this to the local proxy
+# note: only this host will benefit from this. to configure proxy use on other
+# deployed VMs, configure adequate proxy parameters on fce config file (master.yaml)
+ENV_PROXY=yes # Values: yes/no
 ENV_PROXY_HTTP="http://91.189.89.216:3128"
-ENV_PROXY_HTTPS="http://91.189.89.216:3128"
 
 # packages to install
 INSTALL_PACKAGES=(
@@ -83,8 +84,8 @@ VM_LIST=(
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 INSTALL_LAYERS=(
-	#proxy
-	packages
+	proxyclient
+	#packages
 	#kvm
 	#keypair
 	#vms
@@ -93,20 +94,12 @@ INSTALL_LAYERS=(
 	#bind
 	#ssh
 	#tunebcache
+	#proxyserver
 )
 
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 UNINSTALL_LAYERS=(
-	#tunebcache
-	#ssh
-	#bind
-	#iptables
-	#network
-	#vms
-	#keypair
-	#kvm
-	#packages
-	#proxy
+	proxyclient
 )
 
