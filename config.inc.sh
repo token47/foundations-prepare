@@ -68,12 +68,13 @@ INSTALL_PACKAGES=(
 # nested virtualization, so at least 8GB for maas + juju only, more if you want to install LMA
 # type=infra means linux will be installed and configured, and the vm will power on automatically
 # type=node means only the vm will be created but not installed (so the IP address is ignored)
+# disc = use 0 to disable. nics is maximum 5.
 VM_LIST=(
 	# vm      vm              mem  disc1  disc2  disc3
 	#type     name    vcpu     MB    GB     GB     GB   nics    oam ip address
-	"infra   infra1     2    8192    60      0      0     1     192.168.210.4"
-	"infra   infra2     2    4096    60      0      0     1     192.168.210.5"
-	"infra   infra3     2    4096    60      0      0     1     192.168.210.6"
+	"infra   infra1     2    8192    60      0      0     1     192.168.210.4/24"
+	"infra   infra2     2    4096    60      0      0     1     192.168.210.5/24"
+	"infra   infra3     2    4096    60      0      0     1     192.168.210.6/24"
 	"node    node1      2    6144    60     50     50     5     -"
 	"node    node2      2    6144    60     50     50     5     -"
 	"node    node3      2    6144    60     50     50     5     -"
@@ -85,8 +86,14 @@ VM_LIST=(
 	"node    node9      2    6144    60     50     50     5     -"
 )
 
+# image to download for deploying infra nodes (QEMU QCOW v2 images only)
+IMAGE_LOCATION="https://cloud-images.ubuntu.com/releases/18.04/release"
+IMAGE_NAME="ubuntu-18.04-server-cloudimg-amd64.img"
+IMAGE_KVM_OS_VARIANT="ubuntu18.04"
+
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
+# comment out those you don't want to run
 INSTALL_LAYERS=(
 	network
 	proxyserver
@@ -95,17 +102,20 @@ INSTALL_LAYERS=(
 	#bcache
 	keypair
 	kvm
+	dlimg
 	#vms
 	iptables
 	#bind
 )
 
-# list of layers to execute on install
+# list of layers to execute on uninstall
 # the order will be respected so you can arrange as needed
+# comment out those you don't want to run
 UNINSTALL_LAYERS=(
 	#bind
 	iptables
 	#vms
+	#dlimg
 	kvm
 	keypair
 	#bcache

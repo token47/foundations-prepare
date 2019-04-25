@@ -36,9 +36,10 @@ function layer_banner() {
 
 	local "$@"
 
+	echo
 	echo "######################################################################"
-	echo "# Layer: $layer  Action: $action"
-	echo "######################################################################"
+	echo "### Layer: $layer  Action: $action"
+	echo
 
 
 }
