@@ -21,7 +21,7 @@ function layer_install() {
 		sudo modprobe -a kvm_amd
 	fi
 
-	virt-host-validate
+	sudo su -l ubuntu -c virt-host-validate
 	
 }
 
