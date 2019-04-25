@@ -3,7 +3,7 @@
 function layer_install() {
 
 	# just in case the proxy is already running...
-	sudo systemctl stop squid
+	sudo systemctl stop squid || :
 
 	# We need to install and configure squid, but we may need a proxy for that
 	# Obvisouly we cannot use local squid because it's not installed yet so
