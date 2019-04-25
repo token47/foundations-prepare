@@ -94,7 +94,7 @@ INSTALL_LAYERS=(
 	#bcache
 	keypair
 	kvm
-	vms
+	#vms
 	iptables
 	#bind
 )
@@ -104,7 +104,7 @@ INSTALL_LAYERS=(
 UNINSTALL_LAYERS=(
 	#bind
 	iptables
-	vms
+	#vms
 	kvm
 	keypair
 	#bcache

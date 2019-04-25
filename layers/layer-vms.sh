@@ -10,7 +10,7 @@ function create_node_type1() {
 
 	set -x
 
-	lib/kvm-install-vm create -a \
+	sudo -i -l ubuntu -- lib/kvm-install-vm create -a \
 		-b $BRIDGE \
 		-c $vcpu \
 		-d $disc1 \
