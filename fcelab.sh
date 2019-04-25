@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 self_prog="$(basename "$0")"
 self_dir="$(dirname "$0")"
 

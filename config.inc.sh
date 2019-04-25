@@ -2,9 +2,6 @@
 
 # (c) Andre Ruiz 2019
 
-# whether to deploy single node or three node high availability MaaS. 
-HA=false  # single infra node or three nodes cluster (true/false)
-
 # Ip address of the bridge on the host. The first ip is mandatory the others will be aliases
 # on the same bridge to facilitate accessing openstack networks from the host
 BRIDGE=maasbr0
@@ -15,11 +12,6 @@ IPADDR=(
 	10.0.3.1/24
 	10.0.6.0/24
 )
-
-# The ip addresses of the infra nodes (2 and 3 will be ignored if not using HA)
-INFRA1=192.168.210.4
-INFRA2=192.168.210.5
-INFRA3=192.168.210.6
 
 # whether to set up a local squid proxy service on this host
 # my sugestion is to answer yes here, and consider this the main proxy of the environment
@@ -49,18 +41,16 @@ ENV_PROXY_HTTPS="http://91.189.89.216:3128"
 INSTALL_PACKAGES=(
 	wget
 	bridge-utils
-	libvirt-bin
-	libvirt-client
-	qemu-utils
 	virtinst
+	libvirt-bin
+	libvirt-clients
+	libguestfs-tools
 	qemu-kvm
-	qemu-img
+	qemu-utils
 	bind9
 	bind9utils
 	squid
 	genisoimage
-	virt-install
-	libguestfs-tools-c
 	snap:juju
 	snap:juju-wait
 	snap:charm
@@ -71,34 +61,33 @@ INSTALL_PACKAGES=(
 # list of VMs to create
 # please account for the fact that the infra nodes will have VMs inside pods (i.e. juju) using
 # nested virtualization, so at least 8GB for maas + juju only, more if you want to install LMA
-# infra2 and infra3 will be ignored if you use HA=false, no need to remove them from the list
-# note: current limitations on infra nodes: you cannot change their names, and they can have
+# note: current limitations on infra nodes: their names must start with "infra*", and they can have
 # only one disc and one nic, others will be ignored (this may be changed in a future version)
 VM_LIST=(
 	# vm              mem  disc1  disc2  disc3
-	# name    vcpu     MB    GB     GB     GB   nics
-	"infra1     2    8192    60      0      0     1"
-	"infra2     2    4096    60      0      0     1"
-	"infra3     2    4096    60      0      0     1"
-	"node1      2    6144    60     50     50     5"
-	"node2      2    6144    60     50     50     5"
-	"node3      2    6144    60     50     50     5"
-	"node4      2    6144    60     50     50     5"
-	"node5      2    6144    60     50     50     5"
-	"node6      2    6144    60     50     50     5"
-	"node7      2    6144    60     50     50     5"
-	"node8      2    6144    60     50     50     5"
-	"node9      2    6144    60     50     50     5"
+	# name    vcpu     MB    GB     GB     GB   nics     ip address
+	"infra1     2    8192    60      0      0     1   192.168.210.4"
+	#"infra2     2    4096    60      0      0     1   192.168.210.5"
+	#"infra3     2    4096    60      0      0     1   192.168.210.6"
+	"node1      2    6144    60     50     50     5   -"
+	"node2      2    6144    60     50     50     5   -"
+	"node3      2    6144    60     50     50     5   -"
+	"node4      2    6144    60     50     50     5   -"
+	"node5      2    6144    60     50     50     5   -"
+	"node6      2    6144    60     50     50     5   -"
+	"node7      2    6144    60     50     50     5   -"
+	"node8      2    6144    60     50     50     5   -"
+	"node9      2    6144    60     50     50     5   -"
 )
 
 # list of layers to execute on install
 # the order will be respected so you can arrange as needed
 INSTALL_LAYERS=(
 	#proxy
-	#packages
+	packages
 	#kvm
 	#keypair
-	vms
+	#vms
 	#network
 	#iptables
 	#bind
@@ -114,7 +103,7 @@ UNINSTALL_LAYERS=(
 	#bind
 	#iptables
 	#network
-	vms
+	#vms
 	#keypair
 	#kvm
 	#packages

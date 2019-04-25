@@ -6,15 +6,18 @@ function create_node_type1() {
 	oc4="$(printf '%02x\n' $(($RANDOM%256)) )"
 	oc5="$(printf '%02x\n' $(($RANDOM%256)) )"
 
-	lib/kvm-install-vm create \
-		-b maasbr0 \
+	set -x
+
+	lib/kvm-install-vm create -a \
+		-b $BRIDGE \
 		-c $vcpu \
 		-d $disc1 \
 		-m $mem \
 		-M "54:56:$oc3:$oc4:$oc5:01" \
 		-t "ubuntu1804" \
 		$name
-	
+	set +x
+
 }
 
 function create_node_type2() {
@@ -63,9 +66,7 @@ function layer_install() {
 		disc1="${a[3]}" disc2="${a[4]}" disc3="${a[5]}" nets="${a[6]}"
 
 		if [[ "$name" =~ ^infra ]]; then
-			if [ "$HA" == "true" -o "$HA" == "True"] || [ "$name" == "infra1" ]; then
-				create_node_type1
-			fi
+			create_node_type1
 		else
 			create_node_type2
 		fi
