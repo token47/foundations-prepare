@@ -56,6 +56,7 @@ done
 shift $((OPTIND - 1))
 
 if $mflag; then
+	banner "Operation completed successfuly."
 	exit 0
 else
 	usage
