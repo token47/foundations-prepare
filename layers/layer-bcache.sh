@@ -43,6 +43,7 @@ function layer_install() {
 	                fp.write(value)
 	EOF
 
+	sudo chmod +x /usr/local/bin/tune-bcache
 	sudo systemctl daemon-reload
 	sudo systemctl enable tune-bcache.service
 	sudo systemctl start tune-bcache.service
