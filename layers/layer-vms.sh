@@ -188,6 +188,7 @@ function layer_uninstall() {
 		disc2="${a[5]}"; disc3="${a[6]}"; nets="${a[7]}"; ip="${a[8]}";
 
 		destroy_node
+
 	done
 
 	sudo rm -rf "${vm_dir}"

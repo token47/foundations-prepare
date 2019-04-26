@@ -43,6 +43,11 @@ function error_trap() {
 
 }
 
+if [ ${USER} != 'ubuntu' ]; then
+	echo "Script must run under user ubuntu"
+	exit 1
+fi
+
 mflag=false
 while getopts "iuvh" opt
 do
