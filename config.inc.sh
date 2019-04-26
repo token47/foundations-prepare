@@ -49,12 +49,9 @@ INSTALL_PACKAGES=(
 	libvirt-bin
 	qemu-kvm
 	qemu-utils
-	#libvirt-clients
-	#libguestfs-tools
+	libvirt-clients
 	iptables-persistent
 	netfilter-persistent
-	#bind9
-	#bind9utils
 	snap:juju
 	snap:juju-wait
 	snap:charm
@@ -94,33 +91,31 @@ IMAGE_KVM_OS_VARIANT="ubuntu18.04"
 # the order will be respected so you can arrange as needed
 # comment out those you don't want to run
 INSTALL_LAYERS=(
-	#network
-	#proxyserver
-	#proxyclient
-	#packages
-	##bcache
-	#keypair
-	#kvm
-	#dlimg
+	network
+	proxyserver
+	proxyclient
+	packages
+	bcache
+	keypair
+	kvm
+	dlimg
 	vms
-	#iptables
-	##bind
+	iptables
 )
 
 # list of layers to execute on uninstall
 # the order will be respected so you can arrange as needed
 # comment out those you don't want to run
 UNINSTALL_LAYERS=(
-	##bind
-	#iptables
+	iptables
 	vms
-	##dlimg
-	#kvm
-	#keypair
-	##bcache
-	##packages
-	#proxyclient
-	#proxyserver
-	#network
+	dlimg
+	kvm
+	keypair
+	bcache
+	packages
+	proxyclient
+	proxyserver
+	network
 )
 
