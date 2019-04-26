@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -e
+set -eE
+
+trap error_trap ERR
 
 self_prog="$(basename "$0")"
 self_dir="$(dirname "$0")"
@@ -30,6 +32,14 @@ function uninstall() {
 		layer_uninstall
 		)
 	done
+
+}
+
+function error_trap() {
+
+	echo
+	echo "An error has occurred. Instalation aborted. Please revise the logs."
+	echo
 
 }
 
