@@ -43,18 +43,18 @@ function layer_install() {
 	                fp.write(value)
 	EOF
 
-	systemctl daemon-reload
-	systemctl enable tune-bcache.service
-	systemctl start tune-bcache.service
+	sudo systemctl daemon-reload
+	sudo systemctl enable tune-bcache.service
+	sudo systemctl start tune-bcache.service
 
 }
 
 function layer_uninstall() {
 
-	systemctl stop tune-bcache.service
-	rm -f /lib/systemd/system/tune-bcache.service
-	rm -f /usr/local/bin/tune-bcache
-	systemctl daemon-reload
+	sudo systemctl stop tune-bcache.service
+	sudo rm -f /lib/systemd/system/tune-bcache.service
+	sudo rm -f /usr/local/bin/tune-bcache
+	sudo systemctl daemon-reload
 
 }
 

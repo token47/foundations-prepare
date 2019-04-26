@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eE
+set -e
 
 trap error_trap ERR
 
