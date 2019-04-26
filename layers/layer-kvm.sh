@@ -24,7 +24,7 @@ function layer_install() {
 	# this is a hack to use the group just added to user ubuntu
 	sudo su -l ubuntu -c virt-host-validate qemu || :
 
-	sudo chown u+s /usr/lib/qemu/qemu-bridge-helper
+	sudo chmod u+s /usr/lib/qemu/qemu-bridge-helper
 	
 }
 
@@ -40,6 +40,6 @@ function layer_uninstall() {
 		sudo modprobe -a kvm_amd
 	fi
 
-	sudo chown u-s /usr/lib/qemu/qemu-bridge-helper
+	sudo chmod u-s /usr/lib/qemu/qemu-bridge-helper
 }
 
