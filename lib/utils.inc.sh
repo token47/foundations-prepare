@@ -32,7 +32,7 @@ function usage ()
 	exit 0
 }
 
-function layer_banner() {
+function banner() {
 
 	local "$@"
 

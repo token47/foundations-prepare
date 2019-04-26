@@ -13,8 +13,8 @@ source ${self_dir}/lib/utils.inc.sh
 function install() {
 
 	for layer in "${INSTALL_LAYERS[@]}"; do
-		layer_banner action=install layer="$layer"
-		# we want a subshell so that "source" can have a forgettable scope
+		banner action=install layer="$layer"
+		# we want a subshell so that "source" can have a disposable scope
 		(
 		source ./layers/layer-${layer}.sh
 		layer_install
@@ -26,7 +26,7 @@ function install() {
 function uninstall() {
 
 	for layer in ${UNINSTALL_LAYERS[@]}; do
-		layer_banner action=uninstall layer="$layer"
+		banner action=uninstall layer="$layer"
 		(
 		source ./layers/layer-${layer}.sh
 		layer_uninstall
