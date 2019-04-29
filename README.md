@@ -23,7 +23,7 @@ Most of it should be configurable. It will also uninstall everything if you want
 
 Note: if you configure proxies, don't forget to exit shell and login again to load proxy environment variables in your session before trying to use fce tool.
 
-Use case:
+# Use case:
 
 - Grab a server from FCE Lab, Huxton Lab, Icarus Lab or a server at home
 - Install it by hand or using MAAS if available (this maas will not be used afterwards, new MAASes will be installed on your infra nodes, so this is just for baremetal initial setup speedup)
@@ -33,6 +33,12 @@ Use case:
 - Done, you are ready to install and use fce tool to deploy in the VMs.
 
 The environment will have about 12 VMs representing 3 infra nodes and 9 generic nodes and configured to ease the quick testing of complete deploys on the lab.
+
+# Random notes:
+
+- You can route the ubuntu-net to the host easily adding a route for that network thru the neutron gateway's ip on the provider network. Ex. "ip route add 172.16.0.0/24 via 10.0.6.12".
+
+- You may need to re-import the public key from maas@infra nodes to the host so it can remotely control power on libvirt vms. Sometimes a clean / build will erase the key. Use script "fix-kvm-power.sh" for that.
 
 (c) 2019 - Andre Ruiz
 
