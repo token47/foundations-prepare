@@ -1,6 +1,0 @@
-This was downloaded from:
-
-https://github.com/giovtorres/kvm-install-vm
-
-And is Copyright (c) 2018 Giovanni Torres
-
