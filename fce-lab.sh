@@ -8,7 +8,7 @@ self_prog="$(basename "$0")"
 self_dir="$(dirname "$0")"
 
 source ${self_dir}/config.inc.sh
-source ${self_dir}/lib/utils.inc.sh
+source ${self_dir}/layers/utils.inc.sh
 
 function install() {
 
